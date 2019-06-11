@@ -2,15 +2,16 @@ USE CLICOM;
 
 -- Question 1.1
 -- Return 0 rows
-SELECT DISTINCT(client.NOM) 
+SELECT client.NCLI
 FROM 
     dbo.CLIENT      client,
     dbo.COMMANDE    commande,
     dbo.DETAIL      detail
 WHERE client.NCLI = commande.NCLI
 AND commande.NCOM = detail.NCOM
-AND detail.NPRO = ALL 
-    (SELECT produit.NPRO
+GROUP BY client.NCLI
+HAVING count(distinct detail.NPRO) = 
+    (SELECT count(*)
     FROM dbo.PRODUIT produit)
 
 -- Question 1.2
@@ -33,8 +34,7 @@ GROUP BY client.CAT, produit.NPRO
 -- Return 1 row
 SELECT
     produit.LIBELLE,
-    client.LOCALITE,
-    detail.QCOM
+    client.LOCALITE
 FROM
     dbo.CLIENT client,
     dbo.COMMANDE commande,
@@ -43,5 +43,5 @@ FROM
 WHERE client.NCLI = commande.NCLI
 AND commande.NCOM = detail.NCOM
 AND detail.NPRO = produit.NPRO
-GROUP BY produit.LIBELLE, client.LOCALITE, detail.QCOM
-HAVING detail.QCOM > 500
+GROUP BY produit.LIBELLE, client.LOCALITE
+HAVING sum(detail.QCOM) > 500
