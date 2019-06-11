@@ -29,10 +29,10 @@ AND produit.LIBELLE like '%SAPIN%'
 
 -- Question 1.3
 -- Return 1 row
--- |  Total  |
--- |---------|
--- | 1       |
-SELECT COUNT(DISTINCT(produit.NPRO)) as 'Total'
+-- |  NOM       |   Total  |
+-- |------------|----------|
+-- |  VANDERKA  | 30       |
+SELECT client.NOM, sum(detail.QCOM) as 'Total'
 FROM 
     dbo.CLIENT client,
     dbo.COMMANDE commande,
@@ -45,7 +45,7 @@ AND client.LOCALITE = 'Namur'
 AND produit.LIBELLE LIKE '%ACIER%'
 GROUP BY client.NOM
 
--- Question 1.3
+-- Question 1.4
 -- 0 rows affected
 UPDATE dbo.CLIENT
 SET dbo.CLIENT.CAT = 'A2'
